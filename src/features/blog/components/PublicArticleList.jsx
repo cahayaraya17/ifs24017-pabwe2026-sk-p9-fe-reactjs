@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { IconSearch, IconClock, IconUser } from '@tabler/icons-react'
 import { fetchCategories, fetchPublicPosts } from '../api/blogApi'
 import { formatDate } from '../../../helpers/toolsHelper'

@@ -1,4 +1,9 @@
-import { apiRequest } from '../../../helpers/apiHelper'
+﻿import { apiRequest } from '../../../helpers/apiHelper'
 
-export const fetchAdminUsers = () => apiRequest('/api/admin/users')
-export const fetchAdminPosts = () => apiRequest('/api/admin/posts')
+const normalizeList = async (promise) => {
+  const res = await promise
+  return { ...res, data: res.data || [] }
+}
+
+export const fetchAdminUsers = () => normalizeList(apiRequest('/api/admin/users'))
+export const fetchAdminPosts = () => normalizeList(apiRequest('/api/admin/posts'))
