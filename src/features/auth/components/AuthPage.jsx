@@ -44,7 +44,7 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Username</label>
+            <label htmlFor="login-username" className="block text-sm font-medium mb-1">Username</label>
             <input
               id="login-username"
               type="text"
@@ -58,7 +58,7 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
 
           {!isLogin && (
             <div>
-              <label className="block text-sm font-medium mb-1">Email</label>
+              <label htmlFor="register-email" className="block text-sm font-medium mb-1">Email</label>
               <input
                 id="register-email"
                 type="email"
@@ -72,7 +72,7 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
           )}
 
           <div>
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label htmlFor="login-password" className="block text-sm font-medium mb-1">Password</label>
             <input
               id="login-password"
               type="password"
@@ -96,12 +96,12 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
 
         <div className="mt-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <button type="button" onClick={() => onNavigate('/')} className="hover:underline">
-            â† Beranda Publik
+            &larr; Beranda Publik
           </button>
           <button
             type="button"
             onClick={() => onNavigate(isLogin ? '/register' : '/login')}
-            className="text-blue-600 font-medium hover:underline"
+            className="text-blue-600 hover:underline font-medium"
           >
             {isLogin ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Login'}
           </button>
