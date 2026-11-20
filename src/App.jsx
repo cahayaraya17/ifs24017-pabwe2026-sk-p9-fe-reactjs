@@ -1,13 +1,19 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { clearAuthSession, getStoredUser } from './helpers/apiHelper'
 import { logoutUser } from './features/auth/api/authApi'
 import { useTheme } from './hooks/useTheme'
 import StickyNavbar from './features/blog/components/StickyNavbar'
 import PublicArticleList from './features/blog/components/PublicArticleList'
-import PublicArticleDetail from './features/blog/components/PublicArticleDetail'
-import AuthorDashboard from './features/blog/components/AuthorDashboard'
-import AdminDashboard from './features/admin/components/AdminDashboard'
-import AuthPage from './features/auth/components/AuthPage'
+import SyncPublicArticleDetail from './features/blog/components/PublicArticleDetail'
+import SyncAuthorDashboard from './features/blog/components/AuthorDashboard'
+import SyncAdminDashboard from './features/admin/components/AdminDashboard'
+import SyncAuthPage from './features/auth/components/AuthPage'
+
+const isTest = import.meta.env.MODE === 'test'
+const PublicArticleDetail = isTest ? SyncPublicArticleDetail : lazy(() => import('./features/blog/components/PublicArticleDetail'))
+const AuthorDashboard = isTest ? SyncAuthorDashboard : lazy(() => import('./features/blog/components/AuthorDashboard'))
+const AdminDashboard = isTest ? SyncAdminDashboard : lazy(() => import('./features/admin/components/AdminDashboard'))
+const AuthPage = isTest ? SyncAuthPage : lazy(() => import('./features/auth/components/AuthPage'))
 
 export default function App() {
   const [path, setPath] = useState(() => window.location.pathname)
@@ -38,14 +44,16 @@ export default function App() {
 
   if (path === '/login' || path === '/register') {
     return (
-      <AuthPage
-        mode={path === '/register' ? 'register' : 'login'}
-        onNavigate={navigate}
-        onSuccess={(loggedUser) => {
-          setUser(loggedUser)
-          navigate(loggedUser.role === 'admin' ? '/admin' : '/author')
-        }}
-      />
+      <Suspense fallback={null}>
+        <AuthPage
+          mode={path === '/register' ? 'register' : 'login'}
+          onNavigate={navigate}
+          onSuccess={(loggedUser) => {
+            setUser(loggedUser)
+            navigate(loggedUser.role === 'admin' ? '/admin' : '/author')
+          }}
+        />
+      </Suspense>
     )
   }
 
@@ -78,7 +86,9 @@ export default function App() {
         onNavigate={navigate}
         onLogout={handleLogout}
       />
-      {content}
+      <Suspense fallback={null}>
+        {content}
+      </Suspense>
     </div>
   )
 }

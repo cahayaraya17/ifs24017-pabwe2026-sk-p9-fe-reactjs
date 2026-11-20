@@ -26,12 +26,24 @@ export default defineConfig({
     sourcemap: true,
     target: 'esnext',
     cssCodeSplit: false,
+    modulePreload: { polyfill: false },
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
+            if (id.includes('react-dom') || id.includes('/react/')) return 'react-core'
             if (id.includes('@tabler/icons-react')) return 'icons'
-            if (id.includes('react-markdown') || id.includes('remark') || id.includes('rehype')) return 'markdown'
+            if (
+              id.includes('react-markdown') ||
+              id.includes('remark') ||
+              id.includes('rehype') ||
+              id.includes('unified') ||
+              id.includes('micromark') ||
+              id.includes('mdast') ||
+              id.includes('hast')
+            ) {
+              return 'markdown'
+            }
             if (id.includes('sweetalert2')) return 'alerts'
             return 'vendor'
           }
