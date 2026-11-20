@@ -9,11 +9,13 @@ export default defineConfig({
     target: 'es2022',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          icons: ['@tabler/icons-react'],
-          markdown: ['react-markdown'],
-          alerts: ['sweetalert2'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@tabler/icons-react')) return 'icons'
+            if (id.includes('react-markdown') || id.includes('remark') || id.includes('rehype')) return 'markdown'
+            if (id.includes('sweetalert2')) return 'alerts'
+            return 'vendor'
+          }
         },
       },
     },
