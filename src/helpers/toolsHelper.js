@@ -1,3 +1,12 @@
+export function formatDate(dateString) {
+  if (!dateString) return '-'
+  return new Date(dateString).toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
 export async function showSuccessAlert(title, text = '') {
   const { default: Swal } = await import('sweetalert2')
   return Swal.fire({
