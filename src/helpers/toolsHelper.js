@@ -1,25 +1,26 @@
-import Swal from 'sweetalert2'
-
-export function formatDate(dateStr) {
-  if (!dateStr) return '-'
-  const d = new Date(dateStr)
-  return d.toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
+export async function showSuccessAlert(title, text = '') {
+  const { default: Swal } = await import('sweetalert2')
+  return Swal.fire({
+    icon: 'success',
+    title,
+    text,
+    timer: 1500,
+    showConfirmButton: false,
   })
 }
 
-export function showSuccessAlert(title, text = '') {
-  return Swal.fire({ icon: 'success', title, text, timer: 1600, showConfirmButton: false })
+export async function showErrorAlert(title, text = '') {
+  const { default: Swal } = await import('sweetalert2')
+  return Swal.fire({
+    icon: 'error',
+    title,
+    text,
+  })
 }
 
-export function showErrorAlert(title, text = '') {
-  return Swal.fire({ icon: 'error', title, text })
-}
-
-export async function showConfirmDialog(title, text) {
-  const res = await Swal.fire({
+export async function showConfirmDialog(title, text = '') {
+  const { default: Swal } = await import('sweetalert2')
+  const result = await Swal.fire({
     icon: 'warning',
     title,
     text,
@@ -27,5 +28,5 @@ export async function showConfirmDialog(title, text) {
     confirmButtonText: 'Ya, Lanjutkan',
     cancelButtonText: 'Batal',
   })
-  return res.isConfirmed
+  return Boolean(result?.isConfirmed)
 }
