@@ -2,11 +2,30 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+const inlineCssPlugin = () => ({
+  name: 'inline-css-for-lcp',
+  enforce: 'post',
+  apply: 'build',
+  transformIndexHtml(html, { bundle }) {
+    if (!bundle) return html
+    let result = html
+    for (const [fileName, asset] of Object.entries(bundle)) {
+      if (fileName.endsWith('.css') && asset.type === 'asset') {
+        const escaped = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const linkRegex = new RegExp(`<link[^>]*href="[^"]*${escaped}"[^>]*>`, 'i')
+        result = result.replace(linkRegex, `<style>${asset.source}</style>`)
+      }
+    }
+    return result
+  },
+})
+
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), inlineCssPlugin()],
   build: {
     sourcemap: true,
-    target: 'es2022',
+    target: 'esnext',
+    cssCodeSplit: false,
     rollupOptions: {
       output: {
         manualChunks(id) {

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { clearAuthSession, getStoredUser } from './helpers/apiHelper'
 import { logoutUser } from './features/auth/api/authApi'
 import { useTheme } from './hooks/useTheme'
 import StickyNavbar from './features/blog/components/StickyNavbar'
 import PublicArticleList from './features/blog/components/PublicArticleList'
-import PublicArticleDetail from './features/blog/components/PublicArticleDetail'
-import AuthorDashboard from './features/blog/components/AuthorDashboard'
-import AdminDashboard from './features/admin/components/AdminDashboard'
-import AuthPage from './features/auth/components/AuthPage'
+const PublicArticleDetail = lazy(() => import('./features/blog/components/PublicArticleDetail'))
+const AuthorDashboard = lazy(() => import('./features/blog/components/AuthorDashboard'))
+const AdminDashboard = lazy(() => import('./features/admin/components/AdminDashboard'))
+const AuthPage = lazy(() => import('./features/auth/components/AuthPage'))
 
 export default function App() {
   const [path, setPath] = useState(() => window.location.pathname)
@@ -17,7 +17,8 @@ export default function App() {
   useEffect(() => {
     const onPopState = () => setPath(window.location.pathname)
     window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
+    return (<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Memuat...</div>}>
+      ) => window.removeEventListener('popstate', onPopState)
   }, [])
 
   const navigate = (to) => {
@@ -38,6 +39,7 @@ export default function App() {
 
   if (path === '/login' || path === '/register') {
     return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Memuat...</div>}>
       <AuthPage
         mode={path === '/register' ? 'register' : 'login'}
         onNavigate={navigate}
@@ -70,7 +72,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Memuat...</div>}>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       <StickyNavbar
         user={user}
         darkMode={darkMode}
@@ -80,5 +83,6 @@ export default function App() {
       />
       {content}
     </div>
+    </Suspense>
   )
 }
