@@ -4,6 +4,20 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    sourcemap: true,
+    target: 'es2022',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          icons: ['@tabler/icons-react'],
+          markdown: ['react-markdown'],
+          alerts: ['sweetalert2'],
+        },
+      },
+    },
+  },
   server: {
     port: 5174,
     proxy: {

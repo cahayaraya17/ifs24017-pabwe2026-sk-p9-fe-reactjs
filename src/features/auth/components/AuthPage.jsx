@@ -33,7 +33,7 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 px-4">
+    <main className="min-h-screen flex items-center justify-center bg-slate-100 dark:bg-slate-950 px-4">
       <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8">
         <h1 className="text-2xl font-bold text-blue-600 mb-2">
           {isLogin ? 'Masuk ke Delcom Blog' : 'Daftar Akun Penulis'}
@@ -96,7 +96,7 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
 
         <div className="mt-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <button type="button" onClick={() => onNavigate('/')} className="hover:underline">
-            ← Beranda Publik
+            â† Beranda Publik
           </button>
           <button
             type="button"
@@ -107,6 +107,6 @@ export default function AuthPage({ mode = 'login', onSuccess, onNavigate }) {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
