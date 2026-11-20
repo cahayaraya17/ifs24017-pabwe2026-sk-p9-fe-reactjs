@@ -178,7 +178,7 @@ describe('App Multi-Tier SPA 100% Coverage', () => {
     render(<App />)
     fireEvent.click(screen.getByText('Register'))
 
-    fireEvent.click(screen.getByText('Sudah punya akun? Login'))
+    fireEvent.click(await screen.findByText('Sudah punya akun? Login'))
     expect(screen.getByText('Masuk ke Delcom Blog')).toBeInTheDocument()
     fireEvent.click(screen.getByText('Belum punya akun? Daftar'))
     expect(screen.getByText('Daftar Akun Penulis')).toBeInTheDocument()
@@ -263,6 +263,7 @@ describe('App Multi-Tier SPA 100% Coverage', () => {
     // Author route while logged out -> login directly from /author (App.jsx line 60)
     window.history.pushState({}, '', '/author')
     const { unmount: uAuth } = render(<App />)
+    await screen.findByText('Masuk ke Delcom Blog')
     fireEvent.change(document.getElementById('login-username'), { target: { value: 'member' } })
     fireEvent.change(document.getElementById('login-password'), { target: { value: 'member' } })
     fireEvent.click(document.getElementById('login-submit'))

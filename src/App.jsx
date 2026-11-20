@@ -4,16 +4,11 @@ import { logoutUser } from './features/auth/api/authApi'
 import { useTheme } from './hooks/useTheme'
 import StickyNavbar from './features/blog/components/StickyNavbar'
 import PublicArticleList from './features/blog/components/PublicArticleList'
-import SyncPublicArticleDetail from './features/blog/components/PublicArticleDetail'
-import SyncAuthorDashboard from './features/blog/components/AuthorDashboard'
-import SyncAdminDashboard from './features/admin/components/AdminDashboard'
-import SyncAuthPage from './features/auth/components/AuthPage'
 
-const isTest = import.meta.env.MODE === 'test'
-const PublicArticleDetail = isTest ? SyncPublicArticleDetail : lazy(() => import('./features/blog/components/PublicArticleDetail'))
-const AuthorDashboard = isTest ? SyncAuthorDashboard : lazy(() => import('./features/blog/components/AuthorDashboard'))
-const AdminDashboard = isTest ? SyncAdminDashboard : lazy(() => import('./features/admin/components/AdminDashboard'))
-const AuthPage = isTest ? SyncAuthPage : lazy(() => import('./features/auth/components/AuthPage'))
+const PublicArticleDetail = lazy(() => import('./features/blog/components/PublicArticleDetail'))
+const AuthorDashboard = lazy(() => import('./features/blog/components/AuthorDashboard'))
+const AdminDashboard = lazy(() => import('./features/admin/components/AdminDashboard'))
+const AuthPage = lazy(() => import('./features/auth/components/AuthPage'))
 
 export default function App() {
   const [path, setPath] = useState(() => window.location.pathname)
